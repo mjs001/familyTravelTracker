@@ -47,6 +47,10 @@ app.get("/", async (req, res) => {
     color: "teal",
   });
 });
+
+app.get("/health", (req, res) => {
+  res.sendStatus(200);
+});
 app.post("/add", async (req, res) => {
   const input = req.body["country"].toLowerCase();
 
