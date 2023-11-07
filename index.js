@@ -18,6 +18,12 @@ let users = [
   { id: 2, name: "Storm", color: "green" },
 ];
 
+async function getCurrentUser() {
+  const result = await db.query("SELECT * FROM users");
+  users = result.rows;
+  return users.find((user) => user.id == currentUserId);
+}
+
 async function checkVisited() {
   const result = await db.query(
     // CONTINUE HERE
@@ -33,12 +39,13 @@ async function checkVisited() {
 app.get("/", async (req, res) => {
   const results = await db.query("SELECT * FROM users");
   users = results.rows;
+  var currentUsers = await getCurrentUser();
   const countries = await checkVisited();
   res.render("index.ejs", {
     countries: countries,
     total: countries.length,
     users: users,
-    color: "teal",
+    color: currentUsers.color,
   });
 });
 
